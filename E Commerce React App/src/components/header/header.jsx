@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./header.css";
 import ButtonBase from "@mui/material/ButtonBase";
 import SearchIcon from "@mui/icons-material/Search";
@@ -46,8 +46,19 @@ const DropDownSelect = () => {
     "item7",
     "item8",
   ]);
+  const [InputText, SetInputText] = useState("");
+  const [filteredList, SetfilteredList] = useState(optionList);
   const [openDropDown, SetOpenDropDown] = useState(false);
   const [currentValue, SetCurrentValue] = useState("All Categories");
+  useEffect(() => {
+    if (InputText == "") {
+      SetfilteredList(optionList);
+    } else {
+      SetfilteredList(
+        optionList.filter((item, index) => item.includes(InputText)),
+      );
+    }
+  }, [InputText]);
   return (
     <div
       style={{
@@ -77,6 +88,9 @@ const DropDownSelect = () => {
           <input
             type="text"
             placeholder="Search for items.."
+            value={InputText}
+            onChange={(event) => SetInputText(event.target.value)}
+            autoFocus
             style={{
               fontSize: "12px",
               color: "black",
@@ -91,29 +105,51 @@ const DropDownSelect = () => {
           <ul
             className="scroll-css"
             style={{
-              height: "240px",
-              minHeight: "120px",
+              maxHeight: "180px",
               overflowY: "scroll",
             }}
           >
-            {optionList.map((item, index) => (
-              <Box
-                onClick={() => {
-                  SetCurrentValue(item), SetOpenDropDown(!openDropDown);
-                }}
-                sx={{
-                  padding: "12px",
-                  transition: "0.2s",
-                  cursor: "pointer",
-                  ":hover": {
-                    backgroundColor: "#3bb77e",
-                  },
-                }}
-                key={item + index}
-              >
-                {item}
-              </Box>
-            ))}
+            {filteredList.length > 0 ? (
+              filteredList.map((item, index) => (
+                <li style={{ width: "100%" }}>
+                  <ButtonBase
+                    onClick={() => {
+                      SetCurrentValue(item), SetOpenDropDown(!openDropDown);
+                    }}
+                    sx={{
+                      width: "100%",
+                      justifyContent: "start",
+                      padding: "12px",
+                      margin: 0,
+                      transition: "0.2s",
+                      cursor: "pointer",
+                      ":hover": {
+                        backgroundColor: "#3bb77e",
+                      },
+                    }}
+                    key={item + index}
+                  >
+                    {item}
+                  </ButtonBase>
+                </li>
+              ))
+            ) : (
+              <>
+                <ButtonBase
+                  onClick={() => SetOpenDropDown(!openDropDown)}
+                  sx={{
+                    width: "100%",
+                    justifyContent: "start",
+                    padding: "12px",
+                    margin: 0,
+                    transition: "0.2s",
+                    cursor: "pointer",
+                  }}
+                >
+                  No item found!
+                </ButtonBase>
+              </>
+            )}
           </ul>
         </div>
       )}
