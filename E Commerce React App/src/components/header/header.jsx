@@ -1,25 +1,37 @@
 import React, { useState, useEffect } from "react";
 import "./header.css";
-import ButtonBase from "@mui/material/ButtonBase";
 import SearchIcon from "@mui/icons-material/Search";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { Divider, Box } from "@mui/material";
+import { Divider, IconButton, Badge } from "@mui/material";
+import DropDownSelect from "../utils/DropDownSelect";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import ButtonBase from "@mui/material/ButtonBase";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-const CustomButton = ({ label, setFunc, value }) => {
+const LocationCustomButton = ({ label, setFunc, value, st }) => {
+  const [newStyle, SetNewStyle] = useState({});
+  useEffect(() => {
+    SetNewStyle(st);
+  }, [st]);
   return (
     <ButtonBase
       onClick={() => setFunc(!value)}
       sx={{
-        height: "100%",
-        width: "190px",
         diplay: "flex",
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "center",
         cursor: "pointer",
         paddingLeft: "12px",
         paddingRight: "12px",
+        border: "1px solid #3bb77e",
+        boxShadow: 3,
+        ...newStyle,
       }}
     >
+      <LocationOnIcon
+        sx={{
+          justifySelf: "start",
+        }}
+      />
       <div
         style={{
           fontWeight: "600",
@@ -27,133 +39,7 @@ const CustomButton = ({ label, setFunc, value }) => {
       >
         {label}
       </div>
-      <KeyboardArrowDownIcon
-        sx={{
-          justifySelf: "end",
-        }}
-      />
     </ButtonBase>
-  );
-};
-const DropDownSelect = () => {
-  const [optionList, SetOptionList] = useState([
-    "item1",
-    "item2",
-    "item3",
-    "item4",
-    "item5",
-    "item6",
-    "item7",
-    "item8",
-  ]);
-  const [InputText, SetInputText] = useState("");
-  const [filteredList, SetfilteredList] = useState(optionList);
-  const [openDropDown, SetOpenDropDown] = useState(false);
-  const [currentValue, SetCurrentValue] = useState("All Categories");
-  useEffect(() => {
-    if (InputText == "") {
-      SetfilteredList(optionList);
-    } else {
-      SetfilteredList(
-        optionList.filter((item, index) => item.includes(InputText)),
-      );
-    }
-  }, [InputText]);
-  return (
-    <div
-      style={{
-        position: "relative",
-        width: "190px",
-        height: "100%",
-        userSelect: "none",
-        fontSize: "12px",
-      }}
-    >
-      <CustomButton
-        label={currentValue}
-        setFunc={SetOpenDropDown}
-        value={openDropDown}
-      />
-      {openDropDown == true && (
-        <div
-          style={{
-            display: "absolute",
-            width: "190px",
-            top: "48px",
-            left: "0px",
-            boxShadow: "0px 1px 2px 0px rgba(0, 0, 0, 0.35)",
-            paddingBottom: "12px",
-          }}
-        >
-          <input
-            type="text"
-            placeholder="Search for items.."
-            value={InputText}
-            onChange={(event) => SetInputText(event.target.value)}
-            autoFocus
-            style={{
-              fontSize: "12px",
-              color: "black",
-              height: "24px",
-              width: "80%",
-              padding: "12px 8px",
-              margin: "12px 10px",
-              outline: "1px solid #3bb77e",
-              border: "none",
-            }}
-          ></input>
-          <ul
-            className="scroll-css"
-            style={{
-              maxHeight: "180px",
-              overflowY: "scroll",
-            }}
-          >
-            {filteredList.length > 0 ? (
-              filteredList.map((item, index) => (
-                <li style={{ width: "100%" }}>
-                  <ButtonBase
-                    onClick={() => {
-                      SetCurrentValue(item), SetOpenDropDown(!openDropDown);
-                    }}
-                    sx={{
-                      width: "100%",
-                      justifyContent: "start",
-                      padding: "12px",
-                      margin: 0,
-                      transition: "0.2s",
-                      cursor: "pointer",
-                      ":hover": {
-                        backgroundColor: "#3bb77e",
-                      },
-                    }}
-                    key={item + index}
-                  >
-                    {item}
-                  </ButtonBase>
-                </li>
-              ))
-            ) : (
-              <>
-                <ButtonBase
-                  onClick={() => SetOpenDropDown(!openDropDown)}
-                  sx={{
-                    width: "100%",
-                    justifyContent: "start",
-                    padding: "12px",
-                    margin: 0,
-                    transition: "0.2s",
-                    cursor: "pointer",
-                  }}
-                >
-                  No item found!
-                </ButtonBase>
-              </>
-            )}
-          </ul>
-        </div>
-      )}
-    </div>
   );
 };
 const Header = () => {
@@ -189,7 +75,23 @@ const Header = () => {
               border: "1px solid #3bb77e",
             }}
           >
-            <DropDownSelect />
+            <DropDownSelect
+              st={{
+                height: "48px",
+                width: "190px",
+              }}
+              optionList={[
+                "item1",
+                "item2",
+                "item3",
+                "item4",
+                "item5",
+                "item6",
+                "item7",
+                "item8",
+              ]}
+              buttonlabel={"All Categories"}
+            />
             <Divider
               sx={{
                 marginRight: "12px",
@@ -211,6 +113,32 @@ const Header = () => {
             ></input>
             <SearchIcon sx={{ padding: "12px" }} />
           </div>
+          <div style={{ marginLeft: "12px" }}>
+            <DropDownSelect
+              st={{
+                height: "48px",
+                width: "190px",
+              }}
+              optionList={["India", "USA", "China", "Brazil", "Nordic"]}
+              NewCustomButton={LocationCustomButton}
+              buttonlabel={"Location"}
+            />
+          </div>
+          <IconButton sx={{ marginLeft: "12px" }}>
+            <Badge badgeContent={4} color="3bb77e">
+              <FavoriteBorderIcon
+                sx={{
+                  width: "24px",
+                  height: "24px",
+                  cursor: "pointer",
+                  transition: "0.2s",
+                  ":hover": {
+                    color: "red",
+                  },
+                }}
+              />
+            </Badge>
+          </IconButton>
         </div>
       </header>
     </>
