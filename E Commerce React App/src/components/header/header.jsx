@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "./header.css";
-import SearchIcon from "@mui/icons-material/Search";
-import { Divider, IconButton, Badge } from "@mui/material";
+import { Divider, Box } from "@mui/material";
 import DropDownSelect from "../utils/DropDownSelect";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ButtonBase from "@mui/material/ButtonBase";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import CustomBadgeButton from "../utils/CustomBadgeButton";
+import SearchIcon from "@mui/icons-material/Search";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
-const LocationCustomButton = ({ label, setFunc, value, st }) => {
+const LocationCustomButton = ({ label, setFunc, value, customStyle }) => {
   const [newStyle, SetNewStyle] = useState({});
   useEffect(() => {
-    SetNewStyle(st);
-  }, [st]);
+    SetNewStyle(customStyle);
+  }, [customStyle]);
   return (
     <ButtonBase
       onClick={() => setFunc(!value)}
@@ -22,8 +23,9 @@ const LocationCustomButton = ({ label, setFunc, value, st }) => {
         cursor: "pointer",
         paddingLeft: "12px",
         paddingRight: "12px",
-        border: "1px solid #3bb77e",
-        boxShadow: 3,
+        border: "2px solid #00e676",
+        borderRadius: "2px",
+        boxShadow: 2,
         ...newStyle,
       }}
     >
@@ -42,6 +44,7 @@ const LocationCustomButton = ({ label, setFunc, value, st }) => {
     </ButtonBase>
   );
 };
+
 const Header = () => {
   return (
     <>
@@ -58,25 +61,27 @@ const Header = () => {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "start",
+            justifyContent: "space-around",
           }}
         >
           <div style={{ padding: "12px", width: "120px" }}>
             <h1>E COM</h1>
           </div>
-          <div
-            style={{
+          <Box
+            sx={{
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "start",
               width: "600px",
               height: "48px",
-              border: "1px solid #3bb77e",
+              border: "2px solid #00e676",
+              borderRadius: "2px",
+              boxShadow: 2,
             }}
           >
             <DropDownSelect
-              st={{
+              customStyle={{
                 height: "48px",
                 width: "190px",
               }}
@@ -95,7 +100,7 @@ const Header = () => {
             <Divider
               sx={{
                 marginRight: "12px",
-                borderColor: "#3bb77e",
+                borderColor: "#00e676",
                 height: "80%",
               }}
               orientation="vertical"
@@ -103,7 +108,7 @@ const Header = () => {
             <input
               placeholder="Search for items.."
               style={{
-                fontSize: "18px",
+                fontSize: "12px",
                 color: "black",
                 height: "50%",
                 width: "348px",
@@ -112,33 +117,31 @@ const Header = () => {
               }}
             ></input>
             <SearchIcon sx={{ padding: "12px" }} />
-          </div>
+          </Box>
           <div style={{ marginLeft: "12px" }}>
             <DropDownSelect
-              st={{
+              customStyle={{
                 height: "48px",
-                width: "190px",
+                width: "120px",
               }}
               optionList={["India", "USA", "China", "Brazil", "Nordic"]}
               NewCustomButton={LocationCustomButton}
               buttonlabel={"Location"}
             />
           </div>
-          <IconButton sx={{ marginLeft: "12px" }}>
-            <Badge badgeContent={4} color="3bb77e">
-              <FavoriteBorderIcon
-                sx={{
-                  width: "24px",
-                  height: "24px",
-                  cursor: "pointer",
-                  transition: "0.2s",
-                  ":hover": {
-                    color: "red",
-                  },
-                }}
-              />
-            </Badge>
-          </IconButton>
+          <CustomBadgeButton
+            customStyle={{ width: "120px", height: "48px" }}
+            label={"Favorite"}
+          />
+          <CustomBadgeButton
+            customStyle={{ width: "120px", height: "48px" }}
+            badgeStyle={{
+              background: "#3f51b5",
+              color: "white",
+            }}
+            icon={AddShoppingCartIcon}
+            label={"Cart"}
+          />
         </div>
       </header>
     </>

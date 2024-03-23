@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import ButtonBase from "@mui/material/ButtonBase";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-const CustomButton = ({ label, setFunc, value, st }) => {
+const CustomButton = ({ label, setFunc, value, customStyle }) => {
   const [newStyle, SetNewStyle] = useState({});
   useEffect(() => {
-    SetNewStyle(st);
-  }, [st]);
+    SetNewStyle(customStyle);
+  }, [customStyle]);
   return (
     <ButtonBase
       onClick={() => setFunc(!value)}
