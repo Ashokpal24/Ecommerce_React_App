@@ -5,15 +5,15 @@
 .scroll-css::-webkit-scrollbar-track {
   background: transparent;
 }
-.scroll-css::-webkit-scrollbar-track-piece:start {
+/* .scroll-css::-webkit-scrollbar-track-piece:start {
   margin-top: 1px;
-}
+} */
 .scroll-css::-webkit-scrollbar-thumb {
   background-color: grey;
   border-right: none;
   border-left: none;
 }
 
-.scroll-css::-webkit-scrollbar-track-piece:end {
+/* .scroll-css::-webkit-scrollbar-track-piece:end {
   margin-bottom: 1px;
-}
+} */

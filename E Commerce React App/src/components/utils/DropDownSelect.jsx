@@ -5,29 +5,33 @@ import { ClickAwayListener, Box } from "@mui/material";
 
 const DropDownSelect = ({
   optionList,
-  NewCustomButton = null,
   buttonlabel,
-  customStyle,
+  customStyle = null,
+  customButtonStyle = null,
+  startIcon = null,
+  endIcon = null,
 }) => {
-  const TempCustomButton =
-    NewCustomButton != null ? NewCustomButton : CustomButton;
   const [InputText, SetInputText] = useState("");
   const [filteredList, SetfilteredList] = useState([]);
   const [openDropDown, SetOpenDropDown] = useState(false);
   const [currentValue, SetCurrentValue] = useState();
   const [newStyle, SetNewStyle] = useState({});
+  const [newButtonStyle, SetNewButtonStyle] = useState({});
 
   useEffect(() => {
     SetfilteredList(optionList);
     SetCurrentValue(buttonlabel);
     SetNewStyle(customStyle);
+    SetNewButtonStyle(customButtonStyle);
   }, []);
   useEffect(() => {
     if (InputText == "") {
       SetfilteredList(optionList);
     } else {
       SetfilteredList(
-        optionList.filter((item, index) => item.includes(InputText)),
+        optionList.filter((item, index) =>
+          item.toLowerCase().includes(InputText),
+        ),
       );
     }
   }, [InputText]);
@@ -38,25 +42,28 @@ const DropDownSelect = ({
           position: "relative",
           userSelect: "none",
           fontSize: "12px",
+          width: "190px",
+          height: "48px",
           ...newStyle,
         }}
       >
-        <TempCustomButton
+        <CustomButton
           label={currentValue}
           setFunc={SetOpenDropDown}
           value={openDropDown}
-          customStyle={newStyle}
+          customStyle={newButtonStyle}
+          startIcon={startIcon}
+          endIcon={endIcon}
         />
         {openDropDown == true && (
           <Box
             sx={{
               display: "absolute",
-              width: newStyle.width != undefined ? newStyle.width : "190px",
+              width: newStyle != null ? newStyle.width : "190px",
               top: "48px",
               left: "0px",
               boxShadow: 4,
-              paddingBottom: "12px",
-              zIndex: 100,
+              paddingBottom: "6px",
             }}
           >
             <input
@@ -69,9 +76,9 @@ const DropDownSelect = ({
                 fontSize: "12px",
                 color: "black",
                 height: "24px",
-                width: "60%",
-                padding: "12px 5%",
-                margin: "12px 15%",
+                width: "70%",
+                padding: "12px 7.5%",
+                margin: "12px 7.5%",
                 outline: "2px solid #00e676",
                 borderRadius: "2px",
                 border: "none",
@@ -97,6 +104,9 @@ const DropDownSelect = ({
                         padding: "12px 18px",
                         margin: 0,
                         transition: "0.2s",
+                        backgroundColor:
+                          currentValue == item ? "lightgrey" : "white",
+                        color: "black",
                         cursor: "pointer",
                         ":hover": {
                           backgroundColor: "grey",
