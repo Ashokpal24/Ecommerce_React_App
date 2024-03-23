@@ -5,8 +5,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const CustomButton = ({
   label,
-  setFunc,
-  value,
+  callBackFunc = null,
   customStyle,
   customChildStyle,
   startIcon = null,
@@ -27,8 +26,11 @@ const CustomButton = ({
   }, [customStyle]);
   return (
     <ButtonBase
-      onClick={() => setFunc(!value)}
+      onClick={() => {
+        if (callBackFunc != null) callBackFunc();
+      }}
       sx={{
+        zIndex: 1,
         ...newStyle,
       }}
     >
@@ -37,12 +39,13 @@ const CustomButton = ({
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "start",
           width: "100%",
           height: "100%",
           cursor: "pointer",
           paddingLeft: "12px",
           paddingRight: "12px",
+          transition: "0.2s",
           ...newChildStyle,
         }}
       >

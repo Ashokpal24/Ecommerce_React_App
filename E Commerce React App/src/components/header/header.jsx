@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./header.css";
-import { Divider, Box } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import CustomButton from "../utils/CustomButton";
 import DropDownSelect from "../utils/DropDownSelect";
 import CustomBadgeButton from "../utils/CustomBadgeButton";
@@ -18,13 +18,13 @@ const LoginCustomButton = () => {
         height: "48px",
         // border: "2px solid #00e676",
         transition: "0.2s",
-        justifyContent: "center",
         borderRadius: "2px",
       }}
       customChildStyle={{
+        justifyContent: "center",
         ":hover": {
           transition: "0.2s",
-          color: "#00e676",
+          color: "#3BB77E",
         },
       }}
       label={"Login"}
@@ -61,7 +61,7 @@ const Header = () => {
               justifyContent: "space-around",
               width: "600px",
               height: "48px",
-              border: "2px solid #00e676",
+              border: "2px solid #3BB77E",
               borderRadius: "2px",
             }}
           >
@@ -83,7 +83,7 @@ const Header = () => {
               customStyle={{
                 height: "48px",
                 width: "120px",
-                border: "2px solid #00e676",
+                border: "2px solid #3BB77E",
                 borderRadius: "2px",
               }}
               customButtonStyle={{
@@ -97,11 +97,24 @@ const Header = () => {
           </div>
           <div>
             <CustomBadgeButton
-              customStyle={{ width: "120px", height: "48px" }}
+              customStyle={{
+                width: "120px",
+                height: "48px",
+                borderRadius: "2px",
+              }}
               label={"Favorite"}
             />
             <CustomBadgeButton
-              customStyle={{ width: "90px", height: "48px" }}
+              customStyle={{
+                width: "90px",
+                height: "48px",
+                borderRadius: "2px",
+              }}
+              customChildStyle={{
+                ":hover": {
+                  color: "blue",
+                },
+              }}
               badgeStyle={{
                 background: "#3f51b5",
                 color: "white",
@@ -113,6 +126,7 @@ const Header = () => {
           </div>
         </div>
       </header>
+      <Divider />
     </>
   );
 };

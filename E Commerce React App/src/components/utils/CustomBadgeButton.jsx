@@ -3,20 +3,28 @@ import { Badge, Typography } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-const CustomBadgeButton = ({ label, icon, customStyle, badgeStyle }) => {
+const CustomBadgeButton = ({
+  label,
+  icon,
+  customStyle,
+  customChildStyle,
+  badgeStyle,
+}) => {
   let CustomIcon = icon != null ? icon : FavoriteBorderIcon;
   const [count, SetCount] = useState(0);
   const [newStyle, SetNewStyle] = useState({});
+  const [newChildStyle, SetChildNewStyle] = useState({});
   const [newBadgeStyle, SetBadgeNewStyle] = useState({});
 
   useEffect(() => {
     SetNewStyle(customStyle);
+    SetChildNewStyle(customChildStyle);
     SetBadgeNewStyle(badgeStyle);
   }, [customStyle]);
   return (
     <ButtonBase
       onClick={() => SetCount(count + 1)}
-      sx={{ marginLeft: "12px", ...newStyle }}
+      sx={{ zIndex: 1, marginLeft: "12px", ...newStyle }}
     >
       <Badge
         badgeContent={count}
@@ -37,6 +45,7 @@ const CustomBadgeButton = ({ label, icon, customStyle, badgeStyle }) => {
             ":hover": {
               color: "red",
             },
+            ...newChildStyle,
           }}
         />
       </Badge>

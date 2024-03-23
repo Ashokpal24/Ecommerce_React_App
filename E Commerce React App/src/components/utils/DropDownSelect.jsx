@@ -35,6 +35,9 @@ const DropDownSelect = ({
       );
     }
   }, [InputText]);
+  const handleSetOpen = () => {
+    SetOpenDropDown(!openDropDown);
+  };
   return (
     <ClickAwayListener onClickAway={() => SetOpenDropDown(false)}>
       <div
@@ -44,13 +47,13 @@ const DropDownSelect = ({
           fontSize: "12px",
           width: "190px",
           height: "48px",
+          zIndex: 100,
           ...newStyle,
         }}
       >
         <CustomButton
           label={currentValue}
-          setFunc={SetOpenDropDown}
-          value={openDropDown}
+          callBackFunc={handleSetOpen}
           customStyle={newButtonStyle}
           startIcon={startIcon}
           endIcon={endIcon}
@@ -64,6 +67,7 @@ const DropDownSelect = ({
               left: "0px",
               boxShadow: 4,
               paddingBottom: "6px",
+              backgroundColor: "white",
             }}
           >
             <input
@@ -79,7 +83,7 @@ const DropDownSelect = ({
                 width: "70%",
                 padding: "12px 7.5%",
                 margin: "12px 7.5%",
-                outline: "2px solid #00e676",
+                outline: "2px solid #3BB77E",
                 borderRadius: "2px",
                 border: "none",
               }}
@@ -96,7 +100,8 @@ const DropDownSelect = ({
                   <li style={{ width: "100%" }} key={item + index}>
                     <ButtonBase
                       onClick={() => {
-                        SetCurrentValue(item), SetOpenDropDown(!openDropDown);
+                        SetCurrentValue(item);
+                        SetOpenDropDown(!openDropDown);
                       }}
                       sx={{
                         width: "100%",
