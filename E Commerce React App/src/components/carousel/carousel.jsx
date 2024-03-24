@@ -1,13 +1,13 @@
 import React, { useEffect, memo } from "react";
 import { ButtonBase, Typography } from "@mui/material";
 
-const CustomCard = memo(({ label }) => {
+const CustomCard = memo(({ label, offset }) => {
   return (
     <ButtonBase
       sx={{
         width: "250px",
         height: "250px",
-        margin: "0px 35px",
+        margin: `0px ${offset}px`,
         backgroundColor: "grey",
         borderRadius: "10px",
       }}
@@ -18,17 +18,29 @@ const CustomCard = memo(({ label }) => {
 });
 const Carousel = () => {
   const itemList = ["card 1", "card 2", "card 3", "card 4"];
-  let stripWidth = 0;
-  let allowedSpace = 0;
-  let cardSize = 250;
+  let minCardSize = 250;
+  let allowedSpace =
+    window.innerWidth / Math.floor(window.innerWidth / (minCardSize + 35 * 2)); //temporary offset before calculating actual offset
+  let minOffset = (allowedSpace - minCardSize) / 2;
+  let cardAllowed = Math.floor(
+    window.innerWidth / (minCardSize + minOffset * 2),
+  );
   let stripRef = null;
   let maxLimit = 0;
-  let parentsize = 0;
+
   useEffect(() => {
+    allowedSpace = window.innerWidth / cardAllowed;
     stripRef = document.getElementById("carousel-strip");
-    stripWidth = stripRef.getBoundingClientRect().width;
-    allowedSpace = stripWidth / 2 / 4;
-    maxLimit = stripWidth / 2 + allowedSpace;
+    let tempDivWith = allowedSpace * (itemList.length * 2);
+    stripRef.style.width = `${tempDivWith}px`;
+    maxLimit = tempDivWith / 2 + allowedSpace;
+    console.log(
+      cardAllowed,
+      allowedSpace,
+      minOffset,
+      allowedSpace * (itemList.length * 2),
+      maxLimit,
+    );
   }, []);
 
   setInterval(() => {
@@ -37,7 +49,7 @@ const Carousel = () => {
       stripRef.style.transition = "0.3s";
       stripRef.style.left = `${currLeft - allowedSpace}px`;
 
-      if (parseInt(stripRef.style.left, 10) == -maxLimit) {
+      if (parseInt(stripRef.style.left, 10) <= -maxLimit) {
         stripRef.style.left = "0px";
         stripRef.style.transition = "0s";
       }
@@ -60,10 +72,10 @@ const Carousel = () => {
         }}
       >
         {itemList.map((label, index) => (
-          <CustomCard key={index} label={label} />
+          <CustomCard key={index} label={label} offset={minOffset} />
         ))}
         {itemList.map((label, index) => (
-          <CustomCard key={"dup" + index} label={label} />
+          <CustomCard key={"dup" + index} label={label} offset={minOffset} />
         ))}
       </div>
     </div>
