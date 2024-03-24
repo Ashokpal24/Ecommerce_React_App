@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ButtonBase from "@mui/material/ButtonBase";
 import CustomButton from "./CustomButton";
 import { ClickAwayListener, Box } from "@mui/material";
@@ -35,9 +35,9 @@ const DropDownSelect = ({
       );
     }
   }, [InputText]);
-  const handleSetOpen = () => {
+  const handleSetOpen = useCallback(() => {
     SetOpenDropDown(!openDropDown);
-  };
+  }, [openDropDown]);
   return (
     <ClickAwayListener onClickAway={() => SetOpenDropDown(false)}>
       <div
