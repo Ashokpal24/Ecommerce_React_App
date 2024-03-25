@@ -1,4 +1,4 @@
-import React, { useEffect, memo } from "react";
+import React, { useEffect, memo, useRef } from "react";
 import { ButtonBase, Typography } from "@mui/material";
 
 const CustomCard = memo(({ label, offset }) => {
@@ -18,6 +18,7 @@ const CustomCard = memo(({ label, offset }) => {
 });
 const Carousel = () => {
   const itemList = ["card 1", "card 2", "card 3", "card 4"];
+  let carouselID = "carousel-strip" + Math.floor(Math.random() * 100000);
   let minCardSize = 250;
   let allowedSpace =
     window.innerWidth / Math.floor(window.innerWidth / (minCardSize + 35 * 2)); //temporary offset before calculating actual offset
@@ -27,38 +28,55 @@ const Carousel = () => {
   );
   let stripRef = null;
   let maxLimit = 0;
+  let scrollCount = 0;
 
   useEffect(() => {
+    console.log("re-render");
+    stripRef = document.getElementById(carouselID);
+    console.log(stripRef);
     allowedSpace = window.innerWidth / cardAllowed;
-    stripRef = document.getElementById("carousel-strip");
     let tempDivWith = allowedSpace * (itemList.length * 2);
     stripRef.style.width = `${tempDivWith}px`;
     maxLimit = tempDivWith / 2 + allowedSpace;
-    console.log(
-      cardAllowed,
-      allowedSpace,
-      minOffset,
-      allowedSpace * (itemList.length * 2),
-      maxLimit,
-    );
+    // console.log(
+    //   cardAllowed,
+    //   allowedSpace,
+    //   minOffset,
+    //   allowedSpace * (itemList.length * 2),
+    //   maxLimit,
+    // );
   }, []);
-
-  setInterval(() => {
+  setInterval(scrolling, 800);
+  function scrolling() {
     if (stripRef != null) {
-      let currLeft = parseInt(stripRef.style.getPropertyValue("left"), 10);
-      stripRef.style.transition = "0.3s";
-      stripRef.style.left = `${currLeft - allowedSpace}px`;
-
-      if (parseInt(stripRef.style.left, 10) <= -maxLimit) {
-        stripRef.style.left = "0px";
+      scrollCount++;
+      console.log(scrollCount);
+      if (scrollCount === itemList.length + 1) {
+        console.log("reset");
         stripRef.style.transition = "0s";
+        stripRef.style.left = "0px";
+        scrollCount = 1;
+        setTimeout(() => {
+          let currLeft = parseInt(stripRef.style.getPropertyValue("left"), 10);
+          stripRef.style.left = `${currLeft - allowedSpace}px`;
+          stripRef.style.transition = "0.3s";
+        }, 0);
+      } else {
+        let currLeft = parseInt(stripRef.style.getPropertyValue("left"), 10);
+        stripRef.style.left = `${currLeft - allowedSpace}px`;
+        stripRef.style.transition = "0.3s";
       }
+
+      // console.log("pos: ", stripRef.current.style.left);
+      // console.log(stripRef.current.style.getPropertyValue("transition"));
     }
-  }, 1000);
+  }
+
   return (
     <div style={{ overflowX: "hidden" }}>
       <div
-        id="carousel-strip"
+        id={`${carouselID}`}
+        ref={stripRef}
         style={{
           width: "200%",
           height: "300px",
@@ -68,7 +86,6 @@ const Carousel = () => {
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-          transition: "0.3s",
         }}
       >
         {itemList.map((label, index) => (

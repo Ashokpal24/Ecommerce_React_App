@@ -84,7 +84,14 @@ const CustomBlogButton = () => {
 
 const SectionStrip = () => {
   return (
-    <div style={{ position: "sticky", top: 0, backgroundColor: "white" }}>
+    <div
+      style={{
+        position: "sticky",
+        top: 0,
+        backgroundColor: "white",
+        zIndex: 99,
+      }}
+    >
       <div
         style={{
           width: "100%",
