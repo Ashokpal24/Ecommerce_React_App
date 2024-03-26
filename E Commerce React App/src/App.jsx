@@ -7,7 +7,8 @@ export default function App() {
     <>
       <Header />
       <SectionStrip />
-      <Carousel />
+      <Carousel CWidth={150} CHeight={200} delay={2000} />
+      <Carousel CWidth={250} CHeight={250} delay={900} />
     </>
   );
 }

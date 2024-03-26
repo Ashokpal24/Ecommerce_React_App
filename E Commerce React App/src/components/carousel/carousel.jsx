@@ -1,12 +1,12 @@
 import React, { useEffect, memo, useRef } from "react";
 import { ButtonBase, Typography } from "@mui/material";
 
-const CustomCard = memo(({ label, offset }) => {
+const CustomCard = memo(({ label, offset, CardWidth, CardHeight }) => {
   return (
     <ButtonBase
       sx={{
-        width: "150px",
-        height: "250px",
+        width: `${CardWidth}px`,
+        height: `${CardHeight}px`,
         margin: `0px ${offset}px`,
         backgroundColor: "grey",
         borderRadius: "10px",
@@ -16,7 +16,7 @@ const CustomCard = memo(({ label, offset }) => {
     </ButtonBase>
   );
 });
-const Carousel = () => {
+const Carousel = ({ CWidth, CHeight, delay = 0 }) => {
   const itemList = [
     "card 1",
     "card 2",
@@ -32,7 +32,7 @@ const Carousel = () => {
     "card 12",
   ];
   // let carouselID = "carousel-strip" + Math.floor(Math.random() * 100000);
-  let minCardSize = 150;
+  let minCardSize = CWidth;
   let allowedSpace =
     window.innerWidth / Math.floor(window.innerWidth / (minCardSize + 10 * 2)); //temporary offset before calculating actual offset
   let minOffset = (allowedSpace - minCardSize) / 2;
@@ -59,7 +59,7 @@ const Carousel = () => {
     //   maxLimit,
     // );
   }, []);
-  setInterval(scrolling, 800);
+  setInterval(scrolling, delay != 0 ? delay : 800);
   function scrolling() {
     if (stripRef.current != null) {
       scrollCount++;
@@ -89,7 +89,8 @@ const Carousel = () => {
         ref={stripRef}
         style={{
           width: "200%",
-          height: "300px",
+          height: `${CHeight}px`,
+          padding: "10px",
           left: "0px",
           display: "flex",
           position: "relative",
@@ -99,10 +100,22 @@ const Carousel = () => {
         }}
       >
         {itemList.map((label, index) => (
-          <CustomCard key={index} label={label} offset={minOffset} />
+          <CustomCard
+            key={index}
+            label={label}
+            offset={minOffset}
+            CardWidth={CWidth}
+            CardHeight={CHeight}
+          />
         ))}
         {itemList.map((label, index) => (
-          <CustomCard key={"dup" + index} label={label} offset={minOffset} />
+          <CustomCard
+            key={"dup" + index}
+            label={label}
+            offset={minOffset}
+            CardWidth={CWidth}
+            CardHeight={CHeight}
+          />
         ))}
       </div>
     </div>
