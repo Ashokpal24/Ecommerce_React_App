@@ -5,7 +5,7 @@ const CustomCard = memo(({ label, offset }) => {
   return (
     <ButtonBase
       sx={{
-        width: "250px",
+        width: "150px",
         height: "250px",
         margin: `0px ${offset}px`,
         backgroundColor: "grey",
@@ -17,27 +17,40 @@ const CustomCard = memo(({ label, offset }) => {
   );
 });
 const Carousel = () => {
-  const itemList = ["card 1", "card 2", "card 3", "card 4"];
-  let carouselID = "carousel-strip" + Math.floor(Math.random() * 100000);
-  let minCardSize = 250;
+  const itemList = [
+    "card 1",
+    "card 2",
+    "card 3",
+    "card 4",
+    "card 5",
+    "card 6",
+    "card 7",
+    "card 8",
+    "card 9",
+    "card 10",
+    "card 11",
+    "card 12",
+  ];
+  // let carouselID = "carousel-strip" + Math.floor(Math.random() * 100000);
+  let minCardSize = 150;
   let allowedSpace =
-    window.innerWidth / Math.floor(window.innerWidth / (minCardSize + 35 * 2)); //temporary offset before calculating actual offset
+    window.innerWidth / Math.floor(window.innerWidth / (minCardSize + 10 * 2)); //temporary offset before calculating actual offset
   let minOffset = (allowedSpace - minCardSize) / 2;
   let cardAllowed = Math.floor(
     window.innerWidth / (minCardSize + minOffset * 2),
   );
-  let stripRef = null;
-  let maxLimit = 0;
+  let stripRef = useRef(null);
+  // let maxLimit = 0;
   let scrollCount = 0;
 
   useEffect(() => {
     console.log("re-render");
-    stripRef = document.getElementById(carouselID);
-    console.log(stripRef);
+    // stripRef = document.getElementById(carouselID);
+    // console.log(stripRef);
     allowedSpace = window.innerWidth / cardAllowed;
     let tempDivWith = allowedSpace * (itemList.length * 2);
-    stripRef.style.width = `${tempDivWith}px`;
-    maxLimit = tempDivWith / 2 + allowedSpace;
+    stripRef.current.style.width = `${tempDivWith}px`;
+    // maxLimit = tempDivWith / 2 + allowedSpace;
     // console.log(
     //   cardAllowed,
     //   allowedSpace,
@@ -48,24 +61,21 @@ const Carousel = () => {
   }, []);
   setInterval(scrolling, 800);
   function scrolling() {
-    if (stripRef != null) {
+    if (stripRef.current != null) {
       scrollCount++;
-      console.log(scrollCount);
+      // console.log(scrollCount);
       if (scrollCount === itemList.length + 1) {
-        console.log("reset");
-        stripRef.style.transition = "0s";
-        stripRef.style.left = "0px";
+        // console.log("reset");
+        stripRef.current.style.transition = "0s";
+        stripRef.current.style.left = "0px";
         scrollCount = 1;
-        setTimeout(() => {
-          let currLeft = parseInt(stripRef.style.getPropertyValue("left"), 10);
-          stripRef.style.left = `${currLeft - allowedSpace}px`;
-          stripRef.style.transition = "0.3s";
-        }, 0);
-      } else {
-        let currLeft = parseInt(stripRef.style.getPropertyValue("left"), 10);
-        stripRef.style.left = `${currLeft - allowedSpace}px`;
-        stripRef.style.transition = "0.3s";
       }
+      let currLeft = parseInt(
+        getComputedStyle(stripRef.current).getPropertyValue("left"),
+        10,
+      );
+      stripRef.current.style.left = `${currLeft - allowedSpace}px`;
+      stripRef.current.style.transition = "0.3s";
 
       // console.log("pos: ", stripRef.current.style.left);
       // console.log(stripRef.current.style.getPropertyValue("transition"));
@@ -75,7 +85,7 @@ const Carousel = () => {
   return (
     <div style={{ overflowX: "hidden" }}>
       <div
-        id={`${carouselID}`}
+        // id={`${carouselID}`}
         ref={stripRef}
         style={{
           width: "200%",
